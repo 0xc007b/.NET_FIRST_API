@@ -1,20 +1,19 @@
-﻿
-namespace WebApplication1.Helpers;
+﻿namespace WebApplication1.Helpers;
 
+using Models.Professions;
 using AutoMapper;
-using WebApplication1.Entities;
-using WebApplication1.Models.Users;
+using Entities;
+using Models.Users;
 
 public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
         // CreateRequest -> User
-        CreateMap<CreateRequest, User>();
+        CreateMap<CreateUserRequest, User>();
         // UpdateRequest -> User
-        CreateMap<UpdateRequest, User>()
-            .ForAllMembers(x => x.Condition(
-                (src, dest, prop) =>
+        CreateMap<UpdateUserRequest, User>()
+            .ForAllMembers(x => x.Condition((src, dest, prop) =>
                 {
                     // ignore both null & empty string properties
                     if (prop == null) return false;
@@ -23,6 +22,18 @@ public class AutoMapperProfile : Profile
                     // ignore null role
                     if (x.DestinationMember.Name == "Role" && src.Role ==
                         null) return false;
+                    return true;
+                }
+            ));
+
+        CreateMap<CreateProfessionRequest, Profession>();
+        CreateMap<UpdateProfessionRequest, Profession>()
+            .ForAllMembers(x => x.Condition((src, dest, prop) =>
+                {
+                    // ignore both null & empty string properties
+                    if (prop == null) return false;
+                    if (prop.GetType() == typeof(string) &&
+                        string.IsNullOrEmpty((string)prop)) return false;
                     return true;
                 }
             ));

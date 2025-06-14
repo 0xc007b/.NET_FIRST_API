@@ -1,13 +1,14 @@
 ﻿namespace WebApplication1.Controllers;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models.Users;
-using WebApplication1.Services;
+using Models.Users;
+using Services;
+
 [ApiController]
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    private IUserService _userService;
+    private readonly IUserService _userService;
     private IMapper _mapper;
     public UsersController(
         IUserService userService,
@@ -30,13 +31,13 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
     [HttpPost]
-    public IActionResult Create(CreateRequest model)
+    public IActionResult Create(CreateUserRequest model)
     {
         _userService.Create(model);
         return Ok(new { message = "User created" });
     }
     [HttpPut("{id}")]
-    public IActionResult Update(int id, UpdateRequest model)
+    public IActionResult Update(int id, UpdateUserRequest model)
     {
         _userService.Update(id, model);
         return Ok(new { message = "User updated" });

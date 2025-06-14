@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using WebApplication1.Entities;
 
-public class UpdateRequest
+public class UpdateUserRequest
 {
     public string Title { get; set; }
     public string FirstName { get; set; }

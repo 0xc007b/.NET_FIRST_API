@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using WebApplication1.Helpers;
 using WebApplication1.Services;
 
@@ -20,6 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     services.AddScoped<IUserService, UserService>();
+    services.AddScoped<IProfessionService, ProfessionService>();
+    services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo() { Title = "My API", Version = "v1" });
+    });
 }
 var app = builder.Build();
 // configure HTTP request pipeline
@@ -32,6 +38,11 @@ var app = builder.Build();
     // global error handler
     app.UseMiddleware<ErrorHandlerMiddleware>();
     app.MapControllers();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
 app.Run("http://localhost:4000");
 
